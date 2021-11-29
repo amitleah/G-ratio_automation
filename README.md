@@ -1,6 +1,6 @@
 # Python Bootcamp Final Project - G ratio automation
 
-### Installation
+## Installation
 Use the package manager pip to install G-ratio_automation.
 
 ```bash
@@ -9,14 +9,14 @@ pip install -r requirements.txt
 You can download test folder
 
 
-### Purpose of the code:
+## Purpose of the code:
 Automation of g-ratio measurement
 
 In the community of labs studying the nervous system, the quantification of a parameter called “g-ratio” is critical. This parameter takes a cross section image of a nerve (obtained by Electron microscopy) and measures the diameter of single fibers (axons) with and without the insulating layer (called myelin). This ratio indicates the velocity in which electrical signals travel in the fibers and intern reflect on the properties and health of the nerve. 
 
 Currently, g-ratio quantification is done manually in my lab, a task which is tedious and extremely time-consuming. Using Open Computer Vision Library (OpenCV), this python code is able to detect the outline of the myelin layer and calculate the g-ratio automatically after setting a single threshold parameter for each image. This allows to collect data on a much larger scale and accuracy in just a few minutes. 
 
-### How to use the code:
+## How to use the code:
 
 Once code is running – a threshold bar and 4 stacked images with/out filters will show up as follows:
 
