@@ -23,11 +23,11 @@ Currently, g-ratio quantification is done manually in my lab, a task which is te
 
 Once code is running – a threshold bar and 4 stacked images with/out filters will show up as follows:
 
-Diagram 1
+![alt text](/github_images/diagram1.PNG)
 
 When user clicks “c” - a plot containing two images with labeled contours will show up like so:
 
-Diagram 2
+![alt text](/github_images/diagram2.PNG)
 
 User can zoom and verify contour outlines are precise. If not, user may exit this window, adjust threshold bar and click “c” again.
 
@@ -45,7 +45,7 @@ Once data on this image is exported, the code will automatically move onto the n
 Once user is done with all images in folder, or alternatively by pressing “p” for a few seconds at any given point, a scatter plot containing all labeled cells with their g-ratio will appear:
 
 
-Diagram 3
+![alt text](/github_images/diagram3.PNG)
 
 
 This plot comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue, is the classic plot used in papers by scientists studying the nervous system and electrical signal conductance, such as my lab. 
