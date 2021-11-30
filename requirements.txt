@@ -1,0 +1,6 @@
+numpy
+matplotlib
+pandas
+opencv-contrib-python
+glob2
+openpyxl
