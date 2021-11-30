@@ -17,6 +17,8 @@ In the community of labs studying the nervous system, the quantification of a pa
 
 Currently, g-ratio quantification is done manually in my lab, a task which is tedious and extremely time-consuming. Using Open Computer Vision Library (OpenCV), this python code is able to detect the outline of the myelin layer and calculate the g-ratio automatically after setting a single threshold parameter for each image. This allows to collect data on a much larger scale and accuracy in just a few minutes. 
 
+![alt text](/github_images/diagram0.PNG)
+
 ## How to use the code:
 
 Once code is running – a threshold bar and 4 stacked images with/out filters will show up as follows:
