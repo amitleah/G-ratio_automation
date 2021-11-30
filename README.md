@@ -1,5 +1,6 @@
 # Python Bootcamp Final Project - G ratio automation
 
+Diagram of nerve cell
 ![alt text](/github_images/diagram0.PNG)
 
 ## Description
