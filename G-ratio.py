@@ -230,7 +230,7 @@ cv2.createTrackbar("Threshold", "TrackBars", 255, 255, empty)
 circles = []
 
 # Input path
-paths = glob.glob("Images/*.TIF")
+paths = glob.glob("test/*.TIF")
 
 for path, i in zip(paths, range(len(paths))):
 
