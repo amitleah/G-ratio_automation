@@ -12,7 +12,7 @@ Use the package manager pip to install G-ratio_automation.
 ```bash
 pip install -r requirements.txt
 ```
-You can download the images 'test' folder from Google Drive
+You can download the Images 'test' folder from Google Drive. make sure it's named "Images":
 https://drive.google.com/drive/folders/1CdBMGzpU9LzXIdJjpZ-jwynI9IWbyea4?usp=sharing
 
 
