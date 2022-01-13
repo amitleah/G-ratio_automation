@@ -28,27 +28,19 @@ Once code is running – a threshold bar and 4 stacked images with/out filters w
 
 ![alt text](/github_images/diagram1.PNG)
 
-When user clicks “c” - a plot containing two images with labeled contours will show up like so:
+Using Tkinter GUI user can plot the countours, save them to excel and plot in a scatter plot. 
+
+![alt text](/github_images/GUI.PNG)
 
 ![alt text](/github_images/diagram2.PNG)
 
-User can zoom and verify contour outlines are precise. If not, user may exit this window, adjust threshold bar and click “c” again.
-
-Once settled on threshold, user should exit this window and go back to previous window (showing stacked images). 
-
-Now, click “s” for a few seconds, this will export the data from current image to an excel sheet under “G-ratio Automation.xlsx” in current directory. If a finder window pops up – just click “cancel”. 
-
-The table exported includes details on every insulated fiber that was detected. 
+The excel table exported includes details on every insulated fiber that was detected. 
 Each row is a different fiber, consisting of the inner and outer outline.
 Columns include the following details for each fiber: 
 Inner and outer circle area, Inner and outer circle radius, axon diameter, genes (group it belongs to) and finally g-ratio. 
-
-Once data on this image is exported, the code will automatically move onto the next image in folder. 
-
-Once user is done with all images in folder, or alternatively by pressing “p” for a few seconds at any given point, a scatter plot containing all labeled cells with their g-ratio will appear:
 
 
 ![alt text](/github_images/diagram3.PNG)
 
 
-This plot comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue, is the classic plot used in papers by scientists studying the nervous system and electrical signal conductance, such as my lab. 
+This plot is comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue, is the classic plot used in papers by scientists studying the nervous system and electrical signal conductance, such as my lab. 
