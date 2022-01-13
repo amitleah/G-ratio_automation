@@ -1,10 +1,143 @@
 import cv2
 import numpy as np
 import math
-from matplotlib import pyplot as plt
 import glob
 import pandas as pd
+import threading
 from openpyxl.workbook import Workbook
+from matplotlib import pyplot as plt
+from tkinter import *
+
+
+class GUI:
+    after_filtered, original_img, closing_img = None, None, None
+    bgr_closing_frame, bgr_original, path = None, None, None
+    bilateral_img = None
+
+    # gui buttons
+    def plot_button(self):
+        # convert to BGR color format
+        bgr_closing_frame = cv2.cvtColor(gui.after_filtered, cv2.COLOR_GRAY2BGR)
+        bgr_original = cv2.cvtColor(gui.original_img, cv2.COLOR_GRAY2BGR)
+
+        # findContours
+        contours, hierarchy = cv2.findContours(gui.closing_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        info = get_couples(contours)
+        draw_couples(info)
+        info = []
+
+        plot_img = np.hstack((bgr_original, bgr_closing_frame))
+        plt.figure(figsize=figsize)
+        plt.imshow(plot_img, cmap='gray', vmin=0, vmax=255)
+        plt.title("plot_img")
+        plt.show()
+
+    def save_button(self):
+        # convert to BGR color format
+        bgr_closing_frame = cv2.cvtColor(gui.after_filtered, cv2.COLOR_GRAY2BGR)
+        bgr_original = cv2.cvtColor(gui.original_img, cv2.COLOR_GRAY2BGR)
+
+        # findContours
+        contours, hierarchy = cv2.findContours(gui.closing_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        # search for myelin
+        info = get_couples(contours)
+
+        # draw myelins contoursss
+        draw_couples(info)
+
+        # export to excel
+        df = export_excel(info)
+
+        plot_img = np.hstack((bgr_original, bgr_closing_frame))
+        plt.figure(figsize=figsize)
+        plt.imshow(plot_img, cmap='gray', vmin=0, vmax=255)
+        plt.title("plot_img")
+        plt.show()
+
+    def scatter_plot_button(self):
+        scatter_plot(df)
+
+
+# import class
+gui = GUI()
+
+
+def thread_func():
+    print("thread started")  # send_time = time.time()
+    window = Tk()
+
+    window.geometry("800x300")
+    window.configure(bg="#ffffff")
+    window.title("g-ratio")
+
+    window.resizable(False, False)
+
+    while True:
+        # tk GUI
+        canvas = Canvas(
+            window,
+            bg="#ffffff",
+            height=300,
+            width=800,
+            bd=0,
+            highlightthickness=0,
+            relief="ridge")
+        canvas.place(x=0, y=0)
+
+        background_img = PhotoImage(file=f"background.png")
+        background = canvas.create_image(
+            400.0, 150.0,
+            image=background_img)
+
+        # slider
+        global s1
+        s1 = Scale(window, from_=0, to=255, length=600, tickinterval=0,
+                   orient=HORIZONTAL, bd=0, bg='white', highlightthickness=0)
+        s1.set(255)
+        s1.place(x=100, y=100)
+
+        img0 = PhotoImage(file=f"img0.png")
+        b0 = Button(
+            image=img0,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: gui.save_button(),
+            relief="flat")
+
+        b0.place(
+            x=325, y=159,
+            width=150,
+            height=50)
+
+        img1 = PhotoImage(file=f"img1.png")
+        b1 = Button(
+            image=img1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: gui.plot_button(),
+            relief="flat")
+
+        b1.place(
+            x=108, y=159,
+            width=150,
+            height=50)
+
+        img2 = PhotoImage(file=f"img2.png")
+        b2 = Button(
+            image=img2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: gui.scatter_plot_button(),
+            relief="flat")
+
+        b2.place(
+            x=542, y=159,
+            width=150,
+            height=50)
+
+        window.mainloop()
 
 
 def pixels_to_meter(pixels):
@@ -82,14 +215,14 @@ def get_couples(contours):
 
                     # inner circle divided outer circle
                     if 0 < g_ratio < 1:
-                        cv2.circle(bgr_closing_frame, circle_center2, 1, (255, 0, 0), -1)
-                        cv2.putText(bgr_closing_frame, str(round(g_ratio, 3)),
+                        cv2.circle(gui.bgr_closing_frame, circle_center2, 1, (255, 0, 0), -1)
+                        cv2.putText(gui.bgr_closing_frame, str(round(g_ratio, 3)),
                                     (circle_center2[0] - 20,
                                      circle_center2[1] - 20), font,
                                     fontScale, color[0], thickness, cv2.LINE_AA)
 
-                        cv2.circle(bgr_original, circle_center2, 1, (255, 0, 0), -1)
-                        cv2.putText(bgr_original, str(round(g_ratio, 3)),
+                        cv2.circle(gui.bgr_original, circle_center2, 1, (255, 0, 0), -1)
+                        cv2.putText(gui.bgr_original, str(round(g_ratio, 3)),
                                     (circle_center2[0] - 20,
                                      circle_center2[1] - 20), font,
                                     fontScale, color[0], thickness, cv2.LINE_AA)
@@ -108,7 +241,7 @@ def get_couples(contours):
                         axon_diameter = inner_circle_radius * 2
 
                         # give me gene (WT / KO)
-                        gene = get_gene(path)
+                        gene = get_gene(gui.path)
 
                         # append
                         info.append([inner_circle_contour, outer_circle_contour,
@@ -125,10 +258,10 @@ def draw_couples(couples):
         G = np.random.randint(255)
         B = np.random.randint(255)
 
-        cv2.drawContours(bgr_closing_frame, [cnt[0]], 0, (R, G, B), 1)
-        cv2.drawContours(bgr_closing_frame, [cnt[1]], 0, (R, G, B), 1)
-        cv2.drawContours(bgr_original, [cnt[0]], 0, (R, G, B), 1)
-        cv2.drawContours(bgr_original, [cnt[1]], 0, (R, G, B), 1)
+        cv2.drawContours(gui.bgr_closing_frame, [cnt[0]], 0, (R, G, B), 1)
+        cv2.drawContours(gui.bgr_closing_frame, [cnt[1]], 0, (R, G, B), 1)
+        cv2.drawContours(gui.bgr_original, [cnt[0]], 0, (R, G, B), 1)
+        cv2.drawContours(gui.bgr_original, [cnt[1]], 0, (R, G, B), 1)
 
 
 def get_gene(path):
@@ -198,7 +331,6 @@ def empty(a):
 
 
 # variables for excel
-df = []
 inner_circle_areas = []
 outer_circle_areas = []
 inner_circle_radiuses = []
@@ -206,9 +338,6 @@ outer_circle_radiuses = []
 axon_diameters = []
 genes = []
 g_ratios = []
-
-# plot properties
-figsize = (10, 10)
 
 # Text properties
 font = cv2.FONT_HERSHEY_PLAIN
@@ -223,89 +352,59 @@ pixel_to_meter = tenMicroMeter / 196  # 10um / 196 = pixel_to_length
 # dimension properties
 dim = (1000, 1000)
 
-# gray value threshold
-cv2.namedWindow("TrackBars")
-cv2.resizeWindow("TrackBars", 640, 45)
-cv2.createTrackbar("Threshold", "TrackBars", 255, 255, empty)
+# plot properties
+figsize = (10, 10)
+
 circles = []
 
-# Input path
-paths = glob.glob("Images/*.TIF")
+# slider
+s1 = []
+df = []
 
-for path, i in zip(paths, range(len(paths))):
 
-    while True:
+# global variables
 
-        # read gray img
-        gray_img = cv2.imread(path, 0)
 
-        # resize image
-        original_img = cv2.resize(gray_img, dim, interpolation=cv2.INTER_AREA)
+def main():
 
-        # bilateral filter
-        bilateral_img = cv2.bilateralFilter(original_img, 15, 50, 50)
+    # Input path
+    paths = glob.glob("Images/*.tif")
 
-        # threshold
-        gray_max = cv2.getTrackbarPos("Threshold", "TrackBars")
-        after_filtered = cv2.inRange(bilateral_img, 0, gray_max)
+    for gui.path, i in zip(paths, range(len(paths))):
 
-        # reverse binary mask
-        after_filtered = cv2.bitwise_not(after_filtered)
+        while True:
+            # read gray img
+            gray_img = cv2.imread(gui.path, 0)
 
-        # closing morphology operation
-        closing_img = cv2.morphologyEx(after_filtered, cv2.MORPH_CLOSE, kernel=np.ones((3, 3), np.uint8))
+            # resize image
+            gui.original_img = cv2.resize(gray_img, dim, interpolation=cv2.INTER_AREA)
 
-        # draw image index
-        cv2.putText(original_img, f' Image number: {i + 1} / {len(paths)}', (50, 50),
-                    cv2.FONT_HERSHEY_COMPLEX, 1, color[1], thickness)
+            # bilateral filter
+            gui.bilateral_img = cv2.bilateralFilter(gui.original_img, 15, 50, 50)
 
-        imgStack = stackImages(0.5, ([original_img, bilateral_img],
-                                     [after_filtered, closing_img]))
+            # threshold
+            gui.after_filtered = cv2.inRange(gui.bilateral_img, 0, s1.get())
 
-        cv2.imshow('imgStack', imgStack)
+            # reverse binary mask
+            gui.after_filtered = cv2.bitwise_not(gui.after_filtered)
 
-        if cv2.waitKey(1) & 0xFF == ord('c'):  # show me plot
-            # convert to BGR color format
-            bgr_closing_frame = cv2.cvtColor(after_filtered, cv2.COLOR_GRAY2BGR)
-            bgr_original = cv2.cvtColor(original_img, cv2.COLOR_GRAY2BGR)
+            # closing morphology operation
+            gui.closing_img = cv2.morphologyEx(gui.after_filtered, cv2.MORPH_CLOSE, kernel=np.ones((3, 3), np.uint8))
 
-            # findContours
-            contours, hierarchy = cv2.findContours(closing_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            # draw image index
+            cv2.putText(gui.original_img, f' Image number: {i + 1} / {len(paths)}', (50, 50),
+                        cv2.FONT_HERSHEY_COMPLEX, 1, color[1], thickness)
 
-            info = get_couples(contours)
-            draw_couples(info)
-            info = []
+            imgStack = stackImages(0.5, ([gui.original_img, gui.bilateral_img],
+                                         [gui.after_filtered, gui.closing_img]))
 
-            plot_img = np.hstack((bgr_original, bgr_closing_frame))
-            plt.figure(figsize=figsize)
-            plt.imshow(plot_img, cmap='gray', vmin=0, vmax=255)
-            plt.title("plot_img")
-            plt.show()
-        elif cv2.waitKey(1) & 0xFF == ord('s'):  # save to excel
-            # convert to BGR color format
-            bgr_closing_frame = cv2.cvtColor(after_filtered, cv2.COLOR_GRAY2BGR)
-            bgr_original = cv2.cvtColor(original_img, cv2.COLOR_GRAY2BGR)
+            cv2.imshow('imgStack', imgStack)
+            cv2.waitKey(1)
 
-            # findContours
-            contours, hierarchy = cv2.findContours(closing_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    scatter_plot(df)
 
-            # search for myelin
-            info = get_couples(contours)
 
-            # draw myelins contoursss
-            draw_couples(info)
-
-            # export to excel
-            df = export_excel(info)
-
-            plot_img = np.hstack((bgr_original, bgr_closing_frame))
-            plt.figure(figsize=figsize)
-            plt.imshow(plot_img, cmap='gray', vmin=0, vmax=255)
-            plt.title("plot_img")
-            plt.show()
-            break
-        elif cv2.waitKey(1) & 0xFF == ord('p'):  # save to excel
-            scatter_plot(df)
-    cv2.waitKey(1)
-
-scatter_plot(df)
+if __name__ == '__main__':
+    x = threading.Thread(target=thread_func, daemon=True)
+    x.start()
+    main()
