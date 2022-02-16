@@ -28,9 +28,8 @@ Once code is running – a threshold bar and 4 stacked images with/out filters w
 
 ![alt text](/github_images/diagram1.PNG)
 
-Using Tkinter GUI user can plot the countours, save them to excel and plot in a scatter plot. 
-
-![alt text](/github_images/GUI.PNG)
+click "C" to see the countours created. Play with threshold bar until satisfied.
+then click "S" for a few seconds in order to export this data to Excel. 
 
 ![alt text](/github_images/diagram2.PNG)
 
