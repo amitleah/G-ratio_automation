@@ -42,4 +42,4 @@ Inner and outer circle area, Inner and outer circle radius, axon diameter, genes
 ![alt text](/github_images/diagram3.PNG)
 
 
-This plot is comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue, is the classic plot used in papers by scientists studying the nervous system and electrical signal conductance, such as my lab. 
+After going through al the images, This plot will pop up: comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue. This is the classic plot used in papers by scientists studying the nervous system and electrical signal conductance, such as my lab. 
