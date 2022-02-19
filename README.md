@@ -25,7 +25,7 @@ Once code is running, a threshold bar and 4 stacked images with/out filters will
 
 ![alt text](/github_images/diagram1.PNG)
 
-click "C" to see the countours created. Play with threshold bar until satisfied.
+Click "C" to see the countours created. Play with threshold bar until satisfied.
 Then click "S" for a few seconds in order to export this data to Excel, and move on to the next image. 
 
 ![alt text](/github_images/diagram2.PNG)
@@ -35,8 +35,6 @@ Each row is a different fiber, consisting of the inner and outer outline.
 Columns include the following details for each fiber: 
 Inner and outer circle area, Inner and outer circle radius, axon diameter, genes (group it belongs to - WT or KO) and finally g-ratio. 
 
+After going through all the images, a scatter plot will pop up: comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue. This is the classic plot used in papers by scientists studying electrical current in nerve cells, such as my lab. 
 
 ![alt text](/github_images/diagram3.PNG)
-
-
-After going through all the images, a scatter plot will pop up: comparing 2 groups: “WT” (untreated) in red, and “KO” (treated) in blue. This is the classic plot used in papers by scientists studying electrical current in nerve cells, such as my lab. 
